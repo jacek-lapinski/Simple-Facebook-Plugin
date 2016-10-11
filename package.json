@@ -2,7 +2,7 @@
   "name": "facebook-simple-gallery",
   "version": "1.0.0",
   "description": "It is a very simple library for displaying images from facebook",
-  "main": "app/fsg.js",
+  "main": "src/fsg.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -23,6 +23,11 @@
   },
   "homepage": "https://github.com/jacek-lapinski/Facebook-Simple-Gallery#readme",
   "dependencies": {
-    "facebook-ts": "^0.2.3"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-cssmin": "^1.0.2",
+    "grunt-contrib-sass": "^1.0.0",
+    "grunt-ts": "^6.0.0-beta.3"
   }
 }
