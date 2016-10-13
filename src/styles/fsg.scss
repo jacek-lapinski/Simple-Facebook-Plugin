@@ -1,0 +1,31 @@
+ul.fsg-albums {
+    column-count: 2;
+    column-gap: 1em;
+
+    li {
+        display: inline-block;
+        margin: 0 0 1em;
+        width: 100%;
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin: 0 0 10px;
+        }
+
+        .fsg-album-title {
+            margin: 0 0 5px;
+        }
+
+        .fsg-album-count-wrapper {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            color: white;
+            width: 30%;
+            text-align: center;
+        }
+    }
+}

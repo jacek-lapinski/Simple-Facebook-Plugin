@@ -30,7 +30,7 @@ module.exports = function (grunt) {
 
         ts: {
             default : {
-                src: ["./src/**/*.ts", "!node_modules/**/*.ts"]
+                tsconfig: true
             }
         }
     });
@@ -40,7 +40,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-ts");
 
     grunt.registerTask('build', [
-        'ts', 'sass', 'cssmin'
+        'ts', 'sass'
     ]);
 
     grunt.registerTask('default', ['build']);
