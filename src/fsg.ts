@@ -54,15 +54,19 @@ class FSG {
 
     private createAlbumElement(album: Album): HTMLElement {
         let imgElement = document.createElement('img');
-        album.cover_photo_url.then((url) => imgElement.src = url);
+        imgElement.src = album.picture;
 
         let titleElement = document.createElement('div');
         titleElement.className = 'fsg-album-title';
         titleElement.innerText = album.name;
 
+        let aElement = document.createElement('a');
+        aElement.appendChild(imgElement);
+        aElement.appendChild(titleElement);
+        aElement.href = album.link;
+
         let liElement = document.createElement('li');
-        liElement.appendChild(imgElement);
-        liElement.appendChild(titleElement);
+        liElement.appendChild(aElement);
 
         return liElement;
     }
@@ -74,30 +78,59 @@ class AlbumsLoader {
 
     loadAlbums(): Promise<Album[]> {
         return new Promise<Album[]>((resolve, reject) => {
-            FB.api('/' + this.config.fbPage + '/albums', { access_token: this.config.accessToken }, (response) => {
+            FB.api('/' + this.config.fbPage + '/albums?fields=created_time,name,id,count,picture{url},link,photos{images}', { access_token: this.config.accessToken }, (response) => {
                 let albums: Album[] = response.data;
-                albums.forEach(album => {
-                    album.cover_photo_url = this.loadAlbumCoverPicture(album);
-                });
+                for(let i=0; i<albums.length; i++){
+                    albums[i].picture = response.data[i].picture.data.url;
+                }
                 resolve(albums);
             });
         });
     }
 
-    private loadAlbumCoverPicture(album: Album): Promise<string> {
-        return new Promise<string>((resolve, reject) => {
-            FB.api('/' + album.id + '/picture', { access_token: this.config.accessToken }, (response) => {
-                resolve(response.data.url);
+    loadAlbumImages(album: Album): Promise<Image[]>{
+        return new Promise<Image[]>((resolve, reject) => {
+            FB.api('/' + album.id + '?fields=photos{images}', { access_token: this.config.accessToken }, (response) => {
+
+                let result = album.count > 0
+                    ? this.getImagesForAlbum(response.data)
+                    : [];
+
+                resolve(result);
             });
         });
     }
+
+    private getImagesForAlbum(data: any): Image[]{
+        let result: Image[] = [];
+
+        for(let i=0; i<data.length; i++){
+            let image: Image = {
+                id: data[i].id,
+                picture: data[i].images[0].source
+            };
+
+            result.push(image);
+        }
+
+        return result;
+    }
+
 };
+
+interface Image {
+    id: string;
+    picture: string;
+}
 
 interface Album {
     id: string;
     name: string;
     created_time: Date;
-    cover_photo_url: Promise<string>;
+    picture: string;
+    link: string;
+    count: number;
+    images: Image[];
 }
 
 interface Config {

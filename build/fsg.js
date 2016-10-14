@@ -45,13 +45,16 @@ var FSG = (function () {
     };
     FSG.prototype.createAlbumElement = function (album) {
         var imgElement = document.createElement('img');
-        album.cover_photo_url.then(function (url) { return imgElement.src = url; });
+        imgElement.src = album.picture;
         var titleElement = document.createElement('div');
         titleElement.className = 'fsg-album-title';
         titleElement.innerText = album.name;
+        var aElement = document.createElement('a');
+        aElement.appendChild(imgElement);
+        aElement.appendChild(titleElement);
+        aElement.href = album.link;
         var liElement = document.createElement('li');
-        liElement.appendChild(imgElement);
-        liElement.appendChild(titleElement);
+        liElement.appendChild(aElement);
         return liElement;
     };
     return FSG;
@@ -64,22 +67,36 @@ var AlbumsLoader = (function () {
     AlbumsLoader.prototype.loadAlbums = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            FB.api('/' + _this.config.fbPage + '/albums', { access_token: _this.config.accessToken }, function (response) {
+            FB.api('/' + _this.config.fbPage + '/albums?fields=created_time,name,id,count,picture{url},link,photos{images}', { access_token: _this.config.accessToken }, function (response) {
                 var albums = response.data;
-                albums.forEach(function (album) {
-                    album.cover_photo_url = _this.loadAlbumCoverPicture(album);
-                });
+                for (var i = 0; i < albums.length; i++) {
+                    albums[i].picture = response.data[i].picture.data.url;
+                }
                 resolve(albums);
             });
         });
     };
-    AlbumsLoader.prototype.loadAlbumCoverPicture = function (album) {
+    AlbumsLoader.prototype.loadAlbumImages = function (album) {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            FB.api('/' + album.id + '/picture', { access_token: _this.config.accessToken }, function (response) {
-                resolve(response.data.url);
+            FB.api('/' + album.id + '?fields=photos{images}', { access_token: _this.config.accessToken }, function (response) {
+                var result = album.count > 0
+                    ? _this.getImagesForAlbum(response.data)
+                    : [];
+                resolve(result);
             });
         });
+    };
+    AlbumsLoader.prototype.getImagesForAlbum = function (data) {
+        var result = [];
+        for (var i = 0; i < data.length; i++) {
+            var image = {
+                id: data[i].id,
+                picture: data[i].images[0].source
+            };
+            result.push(image);
+        }
+        return result;
     };
     return AlbumsLoader;
 }());
