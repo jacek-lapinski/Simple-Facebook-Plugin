@@ -60,15 +60,38 @@ class FSG {
         titleElement.className = 'fsg-album-title';
         titleElement.innerText = album.name;
 
-        let aElement = document.createElement('a');
-        aElement.appendChild(imgElement);
-        aElement.appendChild(titleElement);
-        aElement.href = album.link;
+        let albumElement = document.createElement('div');
+        albumElement.appendChild(imgElement);
+        albumElement.appendChild(titleElement);
+
+        let imagesElement = document.createElement('div');
+        imagesElement.id = this.getImagesId(album);
 
         let liElement = document.createElement('li');
-        liElement.appendChild(aElement);
+        liElement.appendChild(albumElement);
+        liElement.appendChild(imagesElement);
+
+        albumElement.onclick = (ev) => {
+            this.loadAlbumImages(album);
+        };
 
         return liElement;
+    }
+
+    private getImagesId(album: Album): string {
+        return `images-${album.id}`;
+    }
+
+    private loadAlbumImages(album: Album): void {
+        let collectionId = this.getImagesId(album);
+        let collection = document.getElementById(collectionId);
+        album.images.then(list => {
+            list.forEach(item => {
+                let imageElement = document.createElement('div');
+                imageElement.innerText = item.picture;
+                collection.appendChild(imageElement);
+            });
+        });
     }
 };
 
@@ -78,10 +101,11 @@ class AlbumsLoader {
 
     loadAlbums(): Promise<Album[]> {
         return new Promise<Album[]>((resolve, reject) => {
-            FB.api('/' + this.config.fbPage + '/albums?fields=created_time,name,id,count,picture{url},link,photos{images}', { access_token: this.config.accessToken }, (response) => {
+            FB.api(`/${this.config.fbPage}/albums?fields=created_time,name,id,count,picture{url},link,photos{images}`, { access_token: this.config.accessToken }, (response) => {
                 let albums: Album[] = response.data;
                 for(let i=0; i<albums.length; i++){
                     albums[i].picture = response.data[i].picture.data.url;
+                    albums[i].images = this.loadAlbumImages(albums[i]);
                 }
                 resolve(albums);
             });
@@ -90,10 +114,10 @@ class AlbumsLoader {
 
     loadAlbumImages(album: Album): Promise<Image[]>{
         return new Promise<Image[]>((resolve, reject) => {
-            FB.api('/' + album.id + '?fields=photos{images}', { access_token: this.config.accessToken }, (response) => {
+            FB.api(`/${album.id}?fields=photos{images}`, { access_token: this.config.accessToken }, (response) => {
 
                 let result = album.count > 0
-                    ? this.getImagesForAlbum(response.data)
+                    ? this.getImagesForAlbum(response.photos.data)
                     : [];
 
                 resolve(result);
@@ -130,7 +154,7 @@ interface Album {
     picture: string;
     link: string;
     count: number;
-    images: Image[];
+    images: Promise<Image[]>;
 }
 
 interface Config {

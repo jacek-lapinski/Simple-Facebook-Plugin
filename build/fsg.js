@@ -44,18 +44,38 @@ var FSG = (function () {
         });
     };
     FSG.prototype.createAlbumElement = function (album) {
+        var _this = this;
         var imgElement = document.createElement('img');
         imgElement.src = album.picture;
         var titleElement = document.createElement('div');
         titleElement.className = 'fsg-album-title';
         titleElement.innerText = album.name;
-        var aElement = document.createElement('a');
-        aElement.appendChild(imgElement);
-        aElement.appendChild(titleElement);
-        aElement.href = album.link;
+        var albumElement = document.createElement('div');
+        albumElement.appendChild(imgElement);
+        albumElement.appendChild(titleElement);
+        var imagesElement = document.createElement('div');
+        imagesElement.id = this.getImagesId(album);
         var liElement = document.createElement('li');
-        liElement.appendChild(aElement);
+        liElement.appendChild(albumElement);
+        liElement.appendChild(imagesElement);
+        albumElement.onclick = function (ev) {
+            _this.loadAlbumImages(album);
+        };
         return liElement;
+    };
+    FSG.prototype.getImagesId = function (album) {
+        return "images-" + album.id;
+    };
+    FSG.prototype.loadAlbumImages = function (album) {
+        var collectionId = this.getImagesId(album);
+        var collection = document.getElementById(collectionId);
+        album.images.then(function (list) {
+            list.forEach(function (item) {
+                var imageElement = document.createElement('div');
+                imageElement.innerText = item.picture;
+                collection.appendChild(imageElement);
+            });
+        });
     };
     return FSG;
 }());
@@ -67,10 +87,11 @@ var AlbumsLoader = (function () {
     AlbumsLoader.prototype.loadAlbums = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            FB.api('/' + _this.config.fbPage + '/albums?fields=created_time,name,id,count,picture{url},link,photos{images}', { access_token: _this.config.accessToken }, function (response) {
+            FB.api("/" + _this.config.fbPage + "/albums?fields=created_time,name,id,count,picture{url},link,photos{images}", { access_token: _this.config.accessToken }, function (response) {
                 var albums = response.data;
                 for (var i = 0; i < albums.length; i++) {
                     albums[i].picture = response.data[i].picture.data.url;
+                    albums[i].images = _this.loadAlbumImages(albums[i]);
                 }
                 resolve(albums);
             });
@@ -79,9 +100,9 @@ var AlbumsLoader = (function () {
     AlbumsLoader.prototype.loadAlbumImages = function (album) {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            FB.api('/' + album.id + '?fields=photos{images}', { access_token: _this.config.accessToken }, function (response) {
+            FB.api("/" + album.id + "?fields=photos{images}", { access_token: _this.config.accessToken }, function (response) {
                 var result = album.count > 0
-                    ? _this.getImagesForAlbum(response.data)
+                    ? _this.getImagesForAlbum(response.photos.data)
                     : [];
                 resolve(result);
             });
