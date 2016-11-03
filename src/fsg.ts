@@ -72,25 +72,44 @@ class FSG {
         liElement.appendChild(imagesElement);
 
         albumElement.onclick = (ev) => {
-            this.loadAlbumImages(album);
+            let collection = this.getAlbumImagesElement(album);
+            if(collection.childNodes.length == 0){
+                this.loadAlbumImages(album, true);
+            }
         };
 
         return liElement;
+    }
+
+    private getAlbumImagesElement(album: Album): HTMLElement {
+        let collectionId = this.getImagesId(album);
+        let collection = document.getElementById(collectionId);
+        return collection;
     }
 
     private getImagesId(album: Album): string {
         return `images-${album.id}`;
     }
 
-    private loadAlbumImages(album: Album): void {
-        let collectionId = this.getImagesId(album);
-        let collection = document.getElementById(collectionId);
+    private getImageId(image: Image): string {
+        return `image-${image.id}`;
+    }
+
+    private loadAlbumImages(album: Album, firstLoad: boolean): void {
+        let collection = this.getAlbumImagesElement(album);
         album.images.then(list => {
             list.forEach(item => {
-                let imageElement = document.createElement('div');
-                imageElement.innerText = item.picture;
+                let imageElement = document.createElement('a');
+                imageElement.href = item.picture;
+                imageElement.setAttribute('data-lightbox', album.id);
+
                 collection.appendChild(imageElement);
             });
+
+            if(firstLoad && collection.children.length > 0){
+                let firstChild = collection.children[0] as HTMLElement;
+                firstChild.click();
+            }
         });
     }
 };
@@ -170,4 +189,5 @@ let fsg = new FSG({
     fbPage: 'kendosopot',
     elementId: 'albums'
 });
+
 

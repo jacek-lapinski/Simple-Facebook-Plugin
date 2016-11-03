@@ -4,6 +4,7 @@
   "description": "It is a very simple library for displaying images from facebook",
   "main": "src/fsg.js",
   "scripts": {
+    "build": "grunt build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

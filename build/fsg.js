@@ -59,22 +59,37 @@ var FSG = (function () {
         liElement.appendChild(albumElement);
         liElement.appendChild(imagesElement);
         albumElement.onclick = function (ev) {
-            _this.loadAlbumImages(album);
+            var collection = _this.getAlbumImagesElement(album);
+            if (collection.childNodes.length == 0) {
+                _this.loadAlbumImages(album, true);
+            }
         };
         return liElement;
+    };
+    FSG.prototype.getAlbumImagesElement = function (album) {
+        var collectionId = this.getImagesId(album);
+        var collection = document.getElementById(collectionId);
+        return collection;
     };
     FSG.prototype.getImagesId = function (album) {
         return "images-" + album.id;
     };
-    FSG.prototype.loadAlbumImages = function (album) {
-        var collectionId = this.getImagesId(album);
-        var collection = document.getElementById(collectionId);
+    FSG.prototype.getImageId = function (image) {
+        return "image-" + image.id;
+    };
+    FSG.prototype.loadAlbumImages = function (album, firstLoad) {
+        var collection = this.getAlbumImagesElement(album);
         album.images.then(function (list) {
             list.forEach(function (item) {
-                var imageElement = document.createElement('div');
-                imageElement.innerText = item.picture;
+                var imageElement = document.createElement('a');
+                imageElement.href = item.picture;
+                imageElement.setAttribute('data-lightbox', album.id);
                 collection.appendChild(imageElement);
             });
+            if (firstLoad && collection.children.length > 0) {
+                var firstChild = collection.children[0];
+                firstChild.click();
+            }
         });
     };
     return FSG;
