@@ -1,14 +1,21 @@
 ul.fsg-albums {
-  column-count: 2;
-  column-gap: 1em; }
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
   ul.fsg-albums li {
-    display: inline-block;
-    margin: 0 0 1em;
-    width: 100%; }
+    display: list-item;
+    width: 333px;
+    position: relative;
+    box-sizing: border-box;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 3px rgba(91, 91, 91, 0.26);
+    padding: 0px;
+    cursor: pointer; }
     ul.fsg-albums li img {
-      max-width: 100%;
+      width: 100%;
       height: auto;
-      margin: 0 0 10px; }
+      margin: 0 0 10px;
+      display: block;
+      clear: both; }
     ul.fsg-albums li .fsg-album-title {
       margin: 0 0 5px; }
     ul.fsg-albums li .fsg-album-count-wrapper {
@@ -20,5 +27,19 @@ ul.fsg-albums {
       color: white;
       width: 30%;
       text-align: center; }
+    ul.fsg-albums li .fsg-album-count-box {
+      overflow: auto;
+      margin: auto;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      width: 80px;
+      height: 80px;
+      line-height: 20px; }
+    ul.fsg-albums li .fsg-album-count {
+      font-size: 20px;
+      font-weight: bold; }
 
 /*# sourceMappingURL=fsg.css.map */

@@ -1,8 +1,25 @@
 var FSG = (function () {
     function FSG(config) {
         this.config = config;
+        this.setDefaults();
         this.init();
     }
+    FSG.prototype.setDefaults = function () {
+        if (this.config.imagesCountLimit == undefined) {
+            this.config.imagesCountLimit = 100;
+        }
+        if (this.config.includeAlbums) {
+            this.convertStringArrayToLowerCase(this.config.includeAlbums);
+        }
+        if (this.config.excludeAlbums) {
+            this.convertStringArrayToLowerCase(this.config.excludeAlbums);
+        }
+    };
+    FSG.prototype.convertStringArrayToLowerCase = function (array) {
+        for (var i = 0; i < array.length; i++) {
+            array[i] = array[i].toLocaleLowerCase();
+        }
+    };
     FSG.prototype.init = function () {
         this.initFbScript(document, 'facebook-jssdk');
         this.initFb(window);
@@ -35,6 +52,7 @@ var FSG = (function () {
         var albumsElement = document.getElementById(elementId);
         var ulElement = document.createElement('ul');
         ulElement.className = 'fsg-albums';
+        ulElement.setAttribute('data-masonry', '{ "itemSelector": ".fsg-album", "columnWidth": 200 }');
         albumsElement.appendChild(ulElement);
         albums.then(function (list) {
             list.forEach(function (album) {
@@ -47,21 +65,38 @@ var FSG = (function () {
         var _this = this;
         var imgElement = document.createElement('img');
         imgElement.src = album.picture;
+        var countWrapperElement = document.createElement('div');
+        countWrapperElement.className = 'fsg-album-count-wrapper';
+        var countBoxElement = document.createElement('div');
+        countBoxElement.className = 'fsg-album-count-box';
+        var countElement = document.createElement('span');
+        countElement.className = 'fsg-album-count';
+        countElement.innerText = album.count.toString();
+        countBoxElement.appendChild(countElement);
+        countBoxElement.appendChild(document.createElement('br'));
+        var textNode = document.createTextNode(album.count == 1 ? "Zdjęcie" : "Zdjęcia");
+        countBoxElement.appendChild(textNode);
+        countWrapperElement.appendChild(countBoxElement);
         var titleElement = document.createElement('div');
         titleElement.className = 'fsg-album-title';
         titleElement.innerText = album.name;
         var albumElement = document.createElement('div');
         albumElement.appendChild(imgElement);
+        albumElement.appendChild(countWrapperElement);
         albumElement.appendChild(titleElement);
         var imagesElement = document.createElement('div');
         imagesElement.id = this.getImagesId(album);
         var liElement = document.createElement('li');
+        liElement.className = 'fsg-album';
         liElement.appendChild(albumElement);
         liElement.appendChild(imagesElement);
         albumElement.onclick = function (ev) {
             var collection = _this.getAlbumImagesElement(album);
             if (collection.childNodes.length == 0) {
-                _this.loadAlbumImages(album, true);
+                _this.loadAlbumImages(album);
+            }
+            else {
+                _this.showAlbum(album);
             }
         };
         return liElement;
@@ -77,7 +112,8 @@ var FSG = (function () {
     FSG.prototype.getImageId = function (image) {
         return "image-" + image.id;
     };
-    FSG.prototype.loadAlbumImages = function (album, firstLoad) {
+    FSG.prototype.loadAlbumImages = function (album) {
+        var _this = this;
         var collection = this.getAlbumImagesElement(album);
         album.images.then(function (list) {
             list.forEach(function (item) {
@@ -86,11 +122,15 @@ var FSG = (function () {
                 imageElement.setAttribute('data-lightbox', album.id);
                 collection.appendChild(imageElement);
             });
-            if (firstLoad && collection.children.length > 0) {
-                var firstChild = collection.children[0];
-                firstChild.click();
-            }
+            _this.showAlbum(album);
         });
+    };
+    FSG.prototype.showAlbum = function (album) {
+        var collection = this.getAlbumImagesElement(album);
+        if (collection.children.length > 0) {
+            var firstChild = collection.children[0];
+            firstChild.click();
+        }
     };
     return FSG;
 }());
@@ -102,20 +142,47 @@ var AlbumsLoader = (function () {
     AlbumsLoader.prototype.loadAlbums = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            FB.api("/" + _this.config.fbPage + "/albums?fields=created_time,name,id,count,picture{url},link,photos{images}", { access_token: _this.config.accessToken }, function (response) {
+            FB.api("/" + _this.config.fbPage + "/albums?limit=100&fields=created_time,name,id,count,picture{url},link,photos{images}", { access_token: _this.config.accessToken }, function (response) {
                 var albums = response.data;
-                for (var i = 0; i < albums.length; i++) {
-                    albums[i].picture = response.data[i].picture.data.url;
-                    albums[i].images = _this.loadAlbumImages(albums[i]);
+                var result = [];
+                if (_this.config.excludeAlbums == undefined && _this.config.includeAlbums == undefined) {
+                    for (var i = 0; i < albums.length; i++) {
+                        if (albums[i].count > 0) {
+                            albums[i].picture = response.data[i].picture.data.url;
+                            albums[i].images = _this.loadAlbumImages(albums[i]);
+                            result.push(albums[i]);
+                        }
+                    }
                 }
-                resolve(albums);
+                else if (_this.config.includeAlbums) {
+                    for (var i = 0; i < albums.length; i++) {
+                        if (albums[i].count > 0 && _this.arrayContains(_this.config.includeAlbums, albums[i].name)) {
+                            albums[i].picture = response.data[i].picture.data.url;
+                            albums[i].images = _this.loadAlbumImages(albums[i]);
+                            result.push(albums[i]);
+                        }
+                    }
+                }
+                else {
+                    for (var i = 0; i < albums.length; i++) {
+                        if (albums[i].count > 0 && !_this.arrayContains(_this.config.excludeAlbums, albums[i].name)) {
+                            albums[i].picture = response.data[i].picture.data.url;
+                            albums[i].images = _this.loadAlbumImages(albums[i]);
+                            result.push(albums[i]);
+                        }
+                    }
+                }
+                resolve(result);
             });
         });
+    };
+    AlbumsLoader.prototype.arrayContains = function (array, item) {
+        return array.indexOf(item.toLowerCase()) >= 0;
     };
     AlbumsLoader.prototype.loadAlbumImages = function (album) {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            FB.api("/" + album.id + "?fields=photos{images}", { access_token: _this.config.accessToken }, function (response) {
+            FB.api("/" + album.id + "?fields=photos.limit(100){images}", { access_token: _this.config.accessToken }, function (response) {
                 var result = album.count > 0
                     ? _this.getImagesForAlbum(response.photos.data)
                     : [];
