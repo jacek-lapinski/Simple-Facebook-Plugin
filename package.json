@@ -23,7 +23,9 @@
     "url": "https://github.com/jacek-lapinski/Facebook-Simple-Gallery/issues"
   },
   "homepage": "https://github.com/jacek-lapinski/Facebook-Simple-Gallery#readme",
-  "dependencies": {},
+  "dependencies": {
+    "wookmark": "^2.1.2"
+  },
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-contrib-cssmin": "^1.0.2",

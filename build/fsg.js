@@ -8,6 +8,16 @@ var FSG = (function () {
         if (this.config.imagesCountLimit == undefined) {
             this.config.imagesCountLimit = 100;
         }
+        if (this.config.wookmarkOptions == undefined) {
+            var wookmarkOptions = {
+                autoResize: true,
+                offset: 10,
+                itemWidth: 200,
+                flexibleWidth: 400,
+                outerOffset: 10
+            };
+            this.config.wookmarkOptions = wookmarkOptions;
+        }
         if (this.config.includeAlbums) {
             this.convertStringArrayToLowerCase(this.config.includeAlbums);
         }
@@ -52,14 +62,17 @@ var FSG = (function () {
         var albumsElement = document.getElementById(elementId);
         var ulElement = document.createElement('ul');
         ulElement.className = 'fsg-albums';
-        ulElement.setAttribute('data-masonry', '{ "itemSelector": ".fsg-album", "columnWidth": 200 }');
         albumsElement.appendChild(ulElement);
         albums.then(function (list) {
             list.forEach(function (album) {
                 var liElement = _this.createAlbumElement(album);
                 ulElement.appendChild(liElement);
             });
+            _this.initWookmark();
         });
+    };
+    FSG.prototype.initWookmark = function () {
+        var wookmark = new Wookmark('.fsg-albums', this.config.wookmarkOptions);
     };
     FSG.prototype.createAlbumElement = function (album) {
         var _this = this;
@@ -69,13 +82,10 @@ var FSG = (function () {
         countWrapperElement.className = 'fsg-album-count-wrapper';
         var countBoxElement = document.createElement('div');
         countBoxElement.className = 'fsg-album-count-box';
-        var countElement = document.createElement('span');
+        var countElement = document.createElement('div');
         countElement.className = 'fsg-album-count';
         countElement.innerText = album.count.toString();
         countBoxElement.appendChild(countElement);
-        countBoxElement.appendChild(document.createElement('br'));
-        var textNode = document.createTextNode(album.count == 1 ? "Zdjęcie" : "Zdjęcia");
-        countBoxElement.appendChild(textNode);
         countWrapperElement.appendChild(countBoxElement);
         var titleElement = document.createElement('div');
         titleElement.className = 'fsg-album-title';
@@ -208,5 +218,6 @@ var fsg = new FSG({
     appId: '1270801512983487',
     accessToken: '1270801512983487|21c21db8b582aa474f30bea9b73edc0b',
     fbPage: 'kendosopot',
-    elementId: 'albums'
+    elementId: 'albums',
+    excludeAlbums: ['Timeline Photos', 'Mobile Uploads', 'Cover Photos', 'Profile Pictures', 'Untitled Album']
 });

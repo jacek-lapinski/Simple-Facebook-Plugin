@@ -1,6 +1,10 @@
 /// <reference path="fbsdk.d.ts" />
 /// <reference path="es6-promise.d.ts" />
 
+declare class Wookmark{
+    constructor(container: string, options: any);
+}
+
 class FSG {
     constructor(private config: Config) {
         this.setDefaults();
@@ -12,13 +16,24 @@ class FSG {
             this.config.imagesCountLimit = 100;
         }
 
+        if(this.config.wookmarkOptions == undefined){
+            let wookmarkOptions = {
+                autoResize: true, 
+                offset: 10,
+                itemWidth: 200,
+                flexibleWidth : 400,
+                outerOffset: 10
+            };
+            this.config.wookmarkOptions = wookmarkOptions;
+        }
+
         if (this.config.includeAlbums) {
             this.convertStringArrayToLowerCase(this.config.includeAlbums);
         }
 
         if (this.config.excludeAlbums) {
             this.convertStringArrayToLowerCase(this.config.excludeAlbums);
-        }
+        } 
     }
 
     private convertStringArrayToLowerCase(array: string[]): void {
@@ -63,7 +78,6 @@ class FSG {
         let albumsElement = document.getElementById(elementId);
         let ulElement = document.createElement('ul');
         ulElement.className = 'fsg-albums';
-        ulElement.setAttribute('data-masonry', '{ "itemSelector": ".fsg-album", "columnWidth": 200 }');
         albumsElement.appendChild(ulElement);
 
         albums.then(list => {
@@ -71,7 +85,13 @@ class FSG {
                 let liElement = this.createAlbumElement(album);
                 ulElement.appendChild(liElement);
             })
+            
+            this.initWookmark();
         });
+    }
+
+    private initWookmark(){
+        var wookmark = new Wookmark('.fsg-albums', this.config.wookmarkOptions);
     }
 
     private createAlbumElement(album: Album): HTMLElement {
@@ -84,14 +104,11 @@ class FSG {
         let countBoxElement = document.createElement('div');
         countBoxElement.className = 'fsg-album-count-box';
 
-        let countElement = document.createElement('span');
+        let countElement = document.createElement('div');
         countElement.className = 'fsg-album-count';
         countElement.innerText = album.count.toString();
 
         countBoxElement.appendChild(countElement);
-        countBoxElement.appendChild(document.createElement('br'));
-        let textNode = document.createTextNode(album.count == 1 ? "Zdjęcie" : "Zdjęcia");
-        countBoxElement.appendChild(textNode);
         countWrapperElement.appendChild(countBoxElement);
 
         let titleElement = document.createElement('div');
@@ -258,13 +275,15 @@ interface Config {
     imagesCountLimit?: number;
     includeAlbums?: string[];
     excludeAlbums?: string[];
+    wookmarkOptions?: any;
 }
 
 let fsg = new FSG({
     appId: '1270801512983487',
     accessToken: '1270801512983487|21c21db8b582aa474f30bea9b73edc0b',
     fbPage: 'kendosopot',
-    elementId: 'albums'
+    elementId: 'albums',
+    excludeAlbums: ['Timeline Photos', 'Mobile Uploads', 'Cover Photos', 'Profile Pictures', 'Untitled Album']
 });
 
 
