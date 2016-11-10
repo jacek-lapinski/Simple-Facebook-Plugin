@@ -4,15 +4,15 @@ It is a very simple library for displaying images from facebook
 
 ## Getting started
 
-1 Download all files from /dist folder
-2 Put links to css files in your html file
+1. Download all files from /dist folder
+2. Put links to css files in your html file
 ```html
 <head>
 	<link rel="stylesheet" href="../dist/styles/fsg.min.css" />
 	<link rel="stylesheet" href="../dist/styles/lightbox.min.css" />
 </head>
 ```
-3 Put scripts in your html file
+3. Put scripts in your html file
 ```html
     <script src="../dist/sripts/wookmark.min.js"></script>
 	<script src="../dist/scripts/fsg.min.js"></script>
