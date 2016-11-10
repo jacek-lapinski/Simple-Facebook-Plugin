@@ -4,13 +4,18 @@ module.exports = function (grunt) {
 
         pkg: grunt.file.readJSON('package.json'),
 
+        clean: ["./dist"],
+
         sass: {
             dist: {
+                options: {
+                    sourcemap: 'none'
+                },
                 files: [{
                     expand: true,
                     cwd: './src/styles',
                     src: ['*.scss'],
-                    dest: './build/styles',
+                    dest: './dist/styles',
                     ext: '.css'
                 }]
             }
@@ -20,9 +25,9 @@ module.exports = function (grunt) {
             target: {
                 files: [{
                     expand: true,
-                    cwd: './build/styles',
+                    cwd: './dist/styles',
                     src: ['*.css', '!*.min.css'],
-                    dest: './build/styles',
+                    dest: './dist/styles',
                     ext: '.min.css'
                 }]
             }
@@ -38,20 +43,45 @@ module.exports = function (grunt) {
             my_target: {
                 files: [{
                     expand: true,
-                    cwd: 'src/js',
-                    src: '**/*.js',
-                    dest: 'dest/js'
+                    cwd: './dist/scripts',
+                    src: ['*.js', '!*.min.js'],
+                    dest: './dist/scripts',
+                    ext: '.min.js'
                 }]
             }
-        }
+        },
+
+        copy: {
+            js: {
+                files: [{ 
+                        expand: true, 
+                        flatten: true,
+                        src: ['./src/scripts/*.js'], 
+                        dest: './dist/scripts', 
+                        filter: 'isFile' 
+                }],
+            },
+            css: {
+                files: [{ 
+                        expand: true, 
+                        flatten: true,
+                        src: ['./src/styles/*.css'], 
+                        dest: './dist/styles', 
+                        filter: 'isFile' 
+                }],
+            },
+        },
     });
 
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks("grunt-ts");
+    grunt.loadNpmTasks("grunt-contrib-uglify");
 
     grunt.registerTask('build', [
-        'ts', 'sass'
+        'clean', 'ts', 'copy:js', 'copy:css', 'uglify', 'sass', 'cssmin'
     ]);
 
     grunt.registerTask('default', ['build']);
