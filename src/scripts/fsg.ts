@@ -285,5 +285,3 @@ let fsg = new FSG({
     elementId: 'albums',
     excludeAlbums: ['Timeline Photos', 'Mobile Uploads', 'Cover Photos', 'Profile Pictures', 'Untitled Album']
 });
-
-

@@ -2,6 +2,27 @@
 
 It is a very simple library for displaying images from facebook
 
+## Getting started
+
+1 Download all files from /dist folder
+2 Put links to css files in your html file
+```html
+<head>
+	<link rel="stylesheet" href="../dist/styles/fsg.min.css" />
+	<link rel="stylesheet" href="../dist/styles/lightbox.min.css" />
+</head>
+```
+3 Put scripts in your html file
+```html
+    <script src="../dist/sripts/wookmark.min.js"></script>
+	<script src="../dist/scripts/fsg.min.js"></script>
+	<script src="../dist/sripts/lightbox-plus-jquery.min.js"></script>
+    TODO - show how to use my scripts
+```
+
+## Configuration
+
+TODO!
 
 ## Dependencies
 
@@ -18,8 +39,9 @@ It is a very simple library for displaying images from facebook
 - [grunt-ts](https://github.com/TypeStrong/grunt-ts): Compile and manage your TypeScript project
 - [typescript](https://github.com/Microsoft/TypeScript): TypeScript is a language for application scale JavaScript development
 
-
 ## License
 
 ISC
 
+## Contribution
+I am waiting for your help :)
