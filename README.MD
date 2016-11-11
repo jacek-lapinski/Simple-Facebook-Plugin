@@ -2,6 +2,9 @@
 
 It is a very simple library for displaying images from facebook
 
+## Example
+[link1](http://htmlpreview.github.io/?https://github.com/jacek-lapinski/Facebook-Simple-Gallery/blob/master/src/index.html)
+
 ## Getting started
 
 1. Download all files from /dist folder
