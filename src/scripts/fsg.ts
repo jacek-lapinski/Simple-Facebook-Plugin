@@ -85,8 +85,6 @@ class FSG {
                 let liElement = this.createAlbumElement(album);
                 ulElement.appendChild(liElement);
             })
-            
-            this.initWookmark();
         });
     }
 
@@ -97,6 +95,7 @@ class FSG {
     private createAlbumElement(album: Album): HTMLElement {
         let imgElement = document.createElement('img');
         imgElement.src = album.picture;
+        imgElement.onload = () => this.initWookmark();
 
         let countWrapperElement = document.createElement('div');
         countWrapperElement.className = 'fsg-album-count-wrapper';

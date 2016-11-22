@@ -68,7 +68,6 @@ var FSG = (function () {
                 var liElement = _this.createAlbumElement(album);
                 ulElement.appendChild(liElement);
             });
-            _this.initWookmark();
         });
     };
     FSG.prototype.initWookmark = function () {
@@ -78,6 +77,7 @@ var FSG = (function () {
         var _this = this;
         var imgElement = document.createElement('img');
         imgElement.src = album.picture;
+        imgElement.onload = function () { return _this.initWookmark(); };
         var countWrapperElement = document.createElement('div');
         countWrapperElement.className = 'fsg-album-count-wrapper';
         var countBoxElement = document.createElement('div');
