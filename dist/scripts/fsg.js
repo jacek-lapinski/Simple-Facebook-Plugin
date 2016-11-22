@@ -84,7 +84,9 @@ var FSG = (function () {
         countBoxElement.className = 'fsg-album-count-box';
         var countElement = document.createElement('div');
         countElement.className = 'fsg-album-count';
-        countElement.innerText = album.count.toString();
+        countElement.innerText = album.count > this.config.imagesCountLimit
+            ? this.config.imagesCountLimit.toString()
+            : album.count.toString();
         countBoxElement.appendChild(countElement);
         countWrapperElement.appendChild(countBoxElement);
         var titleElement = document.createElement('div');
@@ -214,10 +216,6 @@ var AlbumsLoader = (function () {
     return AlbumsLoader;
 }());
 ;
-var fsg = new FSG({
-    appId: '1270801512983487',
-    accessToken: '1270801512983487|21c21db8b582aa474f30bea9b73edc0b',
-    fbPage: 'kendosopot',
-    elementId: 'albums',
-    excludeAlbums: ['Timeline Photos', 'Mobile Uploads', 'Cover Photos', 'Profile Pictures', 'Untitled Album']
-});
+function facebookGallery(config) {
+    var fsg = new FSG(config);
+}

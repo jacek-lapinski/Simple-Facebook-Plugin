@@ -1,6 +1,6 @@
 # facebook-simple-gallery 
 
-It is a very simple library for displaying images from facebook
+It is a very simple plugin for displaying facebook gallery on your own website
 
 ## Example
 [link1](http://htmlpreview.github.io/?https://github.com/jacek-lapinski/Facebook-Simple-Gallery/blob/master/src/index.html)
@@ -20,12 +20,68 @@ It is a very simple library for displaying images from facebook
 <script src="../dist/sripts/wookmark.min.js"></script>
 <script src="../dist/scripts/fsg.min.js"></script>
 <script src="../dist/sripts/lightbox-plus-jquery.min.js"></script>
-TODO - show how to use my scripts
 ```
+4. Configure your gallery by script
+```html
+<script>
+facebookGallery({
+		appId: '<YOUR FACEBOOK APP ID>',
+		accessToken: '<YOUR FACEBOOK APP ID>|<YOUR FACEBOOK APP SECURE>',
+		fbPage: '<YOUR FACEBOOK PAGE NAME>',
+		elementId: '<HTML ELEMENT ID FOR GALLERY>'
+	});
+</script>
+```
+5. Configure wookmark layout
+```html
+<script>
+facebookGallery({
+    appId: '<YOUR FACEBOOK APP ID>',
+    accessToken: '<YOUR FACEBOOK APP ID>|<YOUR FACEBOOK APP SECURE>',
+    fbPage: '<YOUR FACEBOOK PAGE NAME>',
+    elementId: '<HTML ELEMENT ID FOR GALLERY>',
+    wookmarkOptions: {
+        align: 'center',
+        autoResize: false,
+        comparator: null,
+        container: $('body'),
+        direction: undefined,
+        ignoreInactiveItems: true,
+        itemWidth: 0,
+        fillEmptySpace: false,
+        flexibleWidth: 0,
+        offset: 2,
+        onLayoutChanged: undefined,
+        outerOffset: 0,
+        possibleFilters: [],
+        resizeDelay: 50,
+        verticalOffset: undefined
+    }
+});
+</script>
+```
+See the [documentation](http://www.wookmark.com/jquery-plugin) for details on available options.
+6. Configure lightbox by script
+```html
+<script>
+lightbox.option({
+    'alwaysShowNavOnTouchDevices': true,
+    'albumLabel': 'Image %1 of %2',
+    'maxHeight': 500
+})  
+</script>
+```
+See the [documentation](http://lokeshdhakar.com/projects/lightbox2/#options) for details on available options.
 
-## Configuration
-
-TODO!
+## Options
+appId: string
+accessToken: string
+fbPage: string
+elementId: string
+imagesCountLimit: number
+includeAlbums: string[]
+excludeAlbums: string[]
+wookmarkOptions?: {}
 
 ## Dependencies
 

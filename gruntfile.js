@@ -70,6 +70,15 @@ module.exports = function (grunt) {
                         filter: 'isFile' 
                 }],
             },
+            images: {
+                files: [{ 
+                        expand: true, 
+                        flatten: true,
+                        src: ['./src/images/*'], 
+                        dest: './dist/images', 
+                        filter: 'isFile' 
+                }],
+            }
         },
     });
 
@@ -81,7 +90,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-uglify");
 
     grunt.registerTask('build', [
-        'clean', 'ts', 'copy:js', 'copy:css', 'uglify', 'sass', 'cssmin'
+        'clean', 'ts', 'copy:js', 'copy:css', 'copy:images', 'uglify', 'sass', 'cssmin'
     ]);
 
     grunt.registerTask('default', ['build']);

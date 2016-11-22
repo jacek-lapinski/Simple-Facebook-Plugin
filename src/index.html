@@ -13,9 +13,18 @@
 	<script src="../dist/scripts/fsg.min.js"></script>
 	<script src="../dist/scripts/lightbox-plus-jquery.min.js"></script>
 	<script>
+	facebookGallery({
+		appId: '1270801512983487',
+		accessToken: '1270801512983487|21c21db8b582aa474f30bea9b73edc0b',
+		fbPage: 'lifewithdogs',
+		elementId: 'albums',
+		imagesCountLimit: 30
+	});
+	</script>
+	<script>
     lightbox.option({
         'alwaysShowNavOnTouchDevices': true,
-        'albumLabel': 'Zdjęcie %1 z %2',
+        'albumLabel': 'Image %1 of %2',
         'maxHeight': 500
     })  
     </script>
