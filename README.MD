@@ -2,12 +2,15 @@
 
 It is a very simple plugin for displaying facebook gallery on your own website
 
+
 ## Example
 [link1](http://htmlpreview.github.io/?https://github.com/jacek-lapinski/Facebook-Simple-Gallery/blob/master/src/index.html)
+
 
 ## Getting started
 
 1. Download all files from /dist folder
+
 2. Put links to css files in your html file
 ```html
 <head>
@@ -15,12 +18,14 @@ It is a very simple plugin for displaying facebook gallery on your own website
 	<link rel="stylesheet" href="../dist/styles/lightbox.min.css" />
 </head>
 ```
+
 3. Put scripts in your html file
 ```html
 <script src="../dist/sripts/wookmark.min.js"></script>
 <script src="../dist/scripts/fsg.min.js"></script>
 <script src="../dist/sripts/lightbox-plus-jquery.min.js"></script>
 ```
+
 4. Configure your gallery by script
 ```html
 <script>
@@ -32,6 +37,7 @@ facebookGallery({
 	});
 </script>
 ```
+
 5. Configure wookmark layout
 ```html
 <script>
@@ -60,7 +66,8 @@ facebookGallery({
 });
 </script>
 ```
-See the [documentation](http://www.wookmark.com/jquery-plugin) for details on available options.
+See the wookmark [documentation](http://www.wookmark.com/jquery-plugin) for details on available options.
+
 6. Configure lightbox by script
 ```html
 <script>
@@ -71,23 +78,34 @@ lightbox.option({
 })  
 </script>
 ```
-See the [documentation](http://lokeshdhakar.com/projects/lightbox2/#options) for details on available options.
+See the lightbox [documentation](http://lokeshdhakar.com/projects/lightbox2/#options) for details on available options.
+
 
 ## Options
+
 appId: string
+
 accessToken: string
+
 fbPage: string
+
 elementId: string
+
 imagesCountLimit: number
-includeAlbums: string[]
-excludeAlbums: string[]
-wookmarkOptions?: {}
+
+includeAlbums: string[ ]
+
+excludeAlbums: string[ ]
+
+wookmarkOptions?: { }
+
 
 ## Dependencies
 
 - [wookmark](https://github.com/germanysbestkeptsecret/Wookmark-jQuery): Javascript plugin for laying out elements of varying heights in a column-based grid. It also contains support for filtering and sorting items. A lot of examples are included showing how to use all the available options.
 - [lightbox](https://github.com/lokesh/lightbox2/)
 - [jQuery](https://github.com/jquery/jquery)
+
 
 ## Dev Dependencies
 
@@ -98,9 +116,12 @@ wookmarkOptions?: {}
 - [grunt-ts](https://github.com/TypeStrong/grunt-ts): Compile and manage your TypeScript project
 - [typescript](https://github.com/Microsoft/TypeScript): TypeScript is a language for application scale JavaScript development
 
+
 ## License
 
 ISC
 
+
 ## Contribution
+
 I am waiting for your help :)
