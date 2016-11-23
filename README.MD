@@ -4,7 +4,8 @@ It is a very simple plugin for displaying facebook gallery on your own website
 
 
 ## Example
-[link1](http://htmlpreview.github.io/?https://github.com/jacek-lapinski/Facebook-Simple-Gallery/blob/master/src/index.html)
+
+[link](http://htmlpreview.github.io/?https://github.com/jacek-lapinski/Facebook-Simple-Gallery/blob/master/src/index.html)
 
 
 ## Getting started
@@ -12,36 +13,36 @@ It is a very simple plugin for displaying facebook gallery on your own website
 1. Download all files from /dist folder
 
 2. Put links to css files in your html file
-```html
-<head>
-    <link rel="stylesheet" href="../dist/styles/fsg.min.css" />
-	<link rel="stylesheet" href="../dist/styles/lightbox.min.css" />
-</head>
-```
+    ```html
+    <head>
+        <link rel="stylesheet" href="../dist/styles/fsg.min.css" />
+        <link rel="stylesheet" href="../dist/styles/lightbox.min.css" />
+    </head>
+    ```
 
 3. Put scripts in your html file
-```html
-<script src="../dist/sripts/wookmark.min.js"></script>
-<script src="../dist/scripts/fsg.min.js"></script>
-<script src="../dist/sripts/lightbox-plus-jquery.min.js"></script>
-```
+    ```html
+    <script src="../dist/sripts/wookmark.min.js"></script>
+    <script src="../dist/scripts/fsg.min.js"></script>
+    <script src="../dist/sripts/lightbox-plus-jquery.min.js"></script>
+    ```
 
 4. Configure your gallery by script
-```html
-<script>
-facebookGallery({
-		appId: '<YOUR FACEBOOK APP ID>',
-		accessToken: '<YOUR FACEBOOK APP ID>|<YOUR FACEBOOK APP SECURE>',
-		fbPage: '<YOUR FACEBOOK PAGE NAME>',
-		elementId: '<HTML ELEMENT ID FOR GALLERY>'
-	});
-</script>
-```
+    ```html
+    <script>
+    facebookGallery({
+        appId: '<YOUR FACEBOOK APP ID>',
+        accessToken: '<YOUR FACEBOOK APP ID>|<YOUR FACEBOOK APP SECURE>',
+        fbPage: '<YOUR FACEBOOK PAGE NAME>',
+        elementId: '<HTML ELEMENT ID FOR GALLERY>'
+    });
+    </script>
+    ```
 
 5. Configure wookmark layout
-```html
-<script>
-facebookGallery({
+    ```html
+    <script>
+    facebookGallery({
     appId: '<YOUR FACEBOOK APP ID>',
     accessToken: '<YOUR FACEBOOK APP ID>|<YOUR FACEBOOK APP SECURE>',
     fbPage: '<YOUR FACEBOOK PAGE NAME>',
@@ -62,23 +63,23 @@ facebookGallery({
         possibleFilters: [],
         resizeDelay: 50,
         verticalOffset: undefined
-    }
-});
-</script>
-```
-See the wookmark [documentation](http://www.wookmark.com/jquery-plugin) for details on available options.
+        }
+    });
+    </script>
+    ```
+    See the wookmark [documentation](http://www.wookmark.com/jquery-plugin) for details on available options.
 
 6. Configure lightbox by script
-```html
-<script>
-lightbox.option({
+    ```html
+    <script>
+    lightbox.option({
     'alwaysShowNavOnTouchDevices': true,
     'albumLabel': 'Image %1 of %2',
     'maxHeight': 500
-})  
-</script>
-```
-See the lightbox [documentation](http://lokeshdhakar.com/projects/lightbox2/#options) for details on available options.
+    })  
+    </script>
+    ```
+    See the lightbox [documentation](http://lokeshdhakar.com/projects/lightbox2/#options) for details on available options.
 
 
 ## Options
