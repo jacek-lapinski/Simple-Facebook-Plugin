@@ -22,9 +22,9 @@ It is a very simple plugin for displaying facebook gallery on your own website
 
 3. Put scripts in your html file
     ```html
-    <script src="../dist/sripts/wookmark.min.js"></script>
+    <script src="../dist/scripts/wookmark.min.js"></script>
     <script src="../dist/scripts/fsg.min.js"></script>
-    <script src="../dist/sripts/lightbox-plus-jquery.min.js"></script>
+    <script src="../dist/scripts/lightbox-plus-jquery.min.js"></script>
     ```
 
 4. Configure your gallery by script

@@ -1,5 +1,6 @@
 ul.fsg-albums {
-  list-style-type: none; }
+  list-style-type: none;
+  position: relative; }
   ul.fsg-albums li {
     display: list-item;
     position: relative;
