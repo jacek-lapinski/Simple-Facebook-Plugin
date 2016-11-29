@@ -1,7 +1,7 @@
 /// <reference path="fbsdk.d.ts" />
 /// <reference path="es6-promise.d.ts" />
 
-declare class Wookmark{
+declare class Wookmark {
     constructor(container: string, options: any);
 }
 
@@ -12,28 +12,54 @@ class FSG {
     }
 
     private setDefaults(): void {
-        if (this.config.imagesCountLimit == undefined) {
-            this.config.imagesCountLimit = 100;
-        }
+        this.setGalleryDefaults();
+        this.setPostsDefaults();
+    }
 
-        if(this.config.wookmarkOptions == undefined){
-            let wookmarkOptions = {
-                autoResize: true, 
-                offset: 10,
-                itemWidth: 200,
-                flexibleWidth : 400,
-                outerOffset: 10
-            };
-            this.config.wookmarkOptions = wookmarkOptions;
-        }
+    private setPostsDefaults(): void {
+        if (this.config.postsOptions) {
+            if (this.config.postsOptions.wookmarkOptions == undefined) {
+                let wookmarkOptions = {
+                    autoResize: true,
+                    offset: 50,
+                    itemWidth: 250,
+                    flexibleWidth: 400,
+                    outerOffset: 50
+                };
+                this.config.postsOptions.wookmarkOptions = wookmarkOptions;
+            }
 
-        if (this.config.includeAlbums) {
-            this.convertStringArrayToLowerCase(this.config.includeAlbums);
+            if (this.config.postsOptions.postsCountLimit == undefined) {
+                this.config.postsOptions.postsCountLimit = 100;
+            }
         }
+    }
 
-        if (this.config.excludeAlbums) {
-            this.convertStringArrayToLowerCase(this.config.excludeAlbums);
-        } 
+    private setGalleryDefaults(): void {
+        if (this.config.galleryOptions) {
+            if (this.config.galleryOptions.wookmarkOptions == undefined) {
+                let wookmarkOptions = {
+                    autoResize: true,
+                    offset: 10,
+                    itemWidth: 200,
+                    flexibleWidth: 400,
+                    outerOffset: 10
+                };
+                this.config.galleryOptions.wookmarkOptions = wookmarkOptions;
+            }
+
+            if (this.config.galleryOptions.imagesCountLimit == undefined) {
+                this.config.galleryOptions.imagesCountLimit = 100;
+            }
+
+            if (this.config.galleryOptions.includeAlbums) {
+                this.convertStringArrayToLowerCase(this.config.galleryOptions.includeAlbums);
+            }
+
+            if (this.config.galleryOptions.excludeAlbums) {
+                this.convertStringArrayToLowerCase(this.config.galleryOptions.excludeAlbums);
+            }
+        }
     }
 
     private convertStringArrayToLowerCase(array: string[]): void {
@@ -55,7 +81,13 @@ class FSG {
                 version: 'v2.8'
             });
 
-            this.loadAlbums(this.config.elementId);
+            if (this.config.postsOptions) {
+                this.loadPosts(this.config.postsOptions.elementId);
+            }
+
+            if (this.config.galleryOptions) {
+                this.loadAlbums(this.config.galleryOptions.elementId);
+            }
         };
     }
 
@@ -69,6 +101,60 @@ class FSG {
         js.id = id;
         js.src = "http://connect.facebook.net/en_US/sdk.js";
         fjs.parentNode.insertBefore(js, fjs);
+    }
+
+    private loadPosts(elementId: string): void {
+        let postsLoader = new PostsLoader(this.config);
+        let posts = postsLoader.loadPosts();
+
+        let postsElement = document.getElementById(elementId);
+        let ulElement = document.createElement('ul');
+        ulElement.className = 'fsg-posts';
+        postsElement.appendChild(ulElement);
+
+        posts.then(list => {
+            list.forEach(post => {
+                let liElement = this.createPostElement(post);
+                ulElement.appendChild(liElement);
+            })
+        });
+    }
+
+    private createPostElement(post: Post): HTMLElement {
+        let imgElement = document.createElement('img');
+        imgElement.src = post.full_picture;
+        imgElement.onload = () => this.initWookmark('.fsg-posts', this.config.postsOptions.wookmarkOptions);
+
+        let dateElement = document.createElement('div');
+        dateElement.innerText = new Date(post.created_time).toLocaleDateString();
+        dateElement.className = 'fsg-post-date';
+
+        let textElement = document.createElement('div');
+        textElement.className = 'fsg-post-text';
+        textElement.innerText = post.message;
+
+        let postElement = document.createElement('div');
+        postElement.appendChild(imgElement);
+        postElement.appendChild(dateElement);
+        postElement.appendChild(textElement);
+
+        if(post.attachments 
+        && post.attachments.data 
+        && post.attachments.data.length > 0 
+        && post.attachments.data[0].type == 'share'){
+            let linkElement = document.createElement('a');
+            linkElement.href = post.attachments.data[0].url;
+            linkElement.className = 'fsg-post-link';
+            linkElement.innerText = post.attachments.data[0].title;
+            postElement.appendChild(linkElement);
+        }
+
+
+        let liElement = document.createElement('li');
+        liElement.className = 'fsg-post';
+        liElement.appendChild(postElement);
+
+        return liElement;
     }
 
     private loadAlbums(elementId: string): void {
@@ -88,14 +174,14 @@ class FSG {
         });
     }
 
-    private initWookmark(){
-        var wookmark = new Wookmark('.fsg-albums', this.config.wookmarkOptions);
+    private initWookmark(element: string, wookmarkOptions: any) {
+        var wookmark = new Wookmark(element, wookmarkOptions);
     }
 
     private createAlbumElement(album: Album): HTMLElement {
         let imgElement = document.createElement('img');
         imgElement.src = album.picture;
-        imgElement.onload = () => this.initWookmark();
+        imgElement.onload = () => this.initWookmark('.fsg-albums', this.config.galleryOptions.wookmarkOptions);
 
         let countWrapperElement = document.createElement('div');
         countWrapperElement.className = 'fsg-album-count-wrapper';
@@ -105,8 +191,8 @@ class FSG {
 
         let countElement = document.createElement('div');
         countElement.className = 'fsg-album-count';
-        countElement.innerText = album.count > this.config.imagesCountLimit 
-            ? this.config.imagesCountLimit.toString() 
+        countElement.innerText = album.count > this.config.galleryOptions.imagesCountLimit
+            ? this.config.galleryOptions.imagesCountLimit.toString()
             : album.count.toString();
 
         countBoxElement.appendChild(countElement);
@@ -178,6 +264,20 @@ class FSG {
     }
 };
 
+class PostsLoader {
+    constructor(private config: Config) {
+    }
+
+    loadPosts(): Promise<Post[]> {
+        return new Promise<Post[]>((resolve, reject) => {
+            FB.api(`/${this.config.fbPage}?fields=posts.limit(10){full_picture,created_time,message,id,attachments{type,url,title}}`, { access_token: this.config.accessToken }, (response) => {
+                let posts: Post[] = response.posts.data;
+                resolve(posts);
+            });
+        });
+    }
+}
+
 class AlbumsLoader {
     constructor(private config: Config) {
     }
@@ -188,7 +288,7 @@ class AlbumsLoader {
                 let albums: Album[] = response.data;
                 let result: Album[] = [];
 
-                if (this.config.excludeAlbums == undefined && this.config.includeAlbums == undefined) {
+                if (this.config.galleryOptions.excludeAlbums == undefined && this.config.galleryOptions.includeAlbums == undefined) {
                     for (let i = 0; i < albums.length; i++) {
                         if (albums[i].count > 0) {
                             albums[i].picture = response.data[i].picture.data.url;
@@ -196,9 +296,9 @@ class AlbumsLoader {
                             result.push(albums[i]);
                         }
                     }
-                } else if (this.config.includeAlbums) {
+                } else if (this.config.galleryOptions.includeAlbums) {
                     for (let i = 0; i < albums.length; i++) {
-                        if (albums[i].count > 0 && this.arrayContains(this.config.includeAlbums, albums[i].name)) {
+                        if (albums[i].count > 0 && this.arrayContains(this.config.galleryOptions.includeAlbums, albums[i].name)) {
                             albums[i].picture = response.data[i].picture.data.url;
                             albums[i].images = this.loadAlbumImages(albums[i]);
                             result.push(albums[i]);
@@ -206,7 +306,7 @@ class AlbumsLoader {
                     }
                 } else {
                     for (let i = 0; i < albums.length; i++) {
-                        if (albums[i].count > 0 && !this.arrayContains(this.config.excludeAlbums, albums[i].name)) {
+                        if (albums[i].count > 0 && !this.arrayContains(this.config.galleryOptions.excludeAlbums, albums[i].name)) {
                             albums[i].picture = response.data[i].picture.data.url;
                             albums[i].images = this.loadAlbumImages(albums[i]);
                             result.push(albums[i]);
@@ -258,10 +358,18 @@ interface Image {
     picture: string;
 }
 
+interface Post {
+    id: string;
+    created_time: string;
+    full_picture: string;
+    message: string;
+    attachments: any;
+}
+
 interface Album {
     id: string;
     name: string;
-    created_time: Date;
+    created_time: string;
     picture: string;
     link: string;
     count: number;
@@ -272,10 +380,21 @@ interface Config {
     appId: string;
     accessToken: string;
     fbPage: string;
+    galleryOptions?: GalleryOptions;
+    postsOptions?: PostsOptions;
+}
+
+interface GalleryOptions {
     elementId: string;
     imagesCountLimit?: number;
     includeAlbums?: string[];
     excludeAlbums?: string[];
+    wookmarkOptions?: any;
+}
+
+interface PostsOptions {
+    elementId: string;
+    postsCountLimit?: number;
     wookmarkOptions?: any;
 }
 

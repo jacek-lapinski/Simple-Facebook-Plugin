@@ -41,3 +41,27 @@ ul.fsg-albums {
       font-size: 30px;
       font-weight: bold;
       margin-top: 4px; }
+
+ul.fsg-posts {
+  list-style-type: none;
+  position: relative; }
+  ul.fsg-posts li {
+    display: list-item;
+    position: relative;
+    box-sizing: border-box;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 3px rgba(91, 91, 91, 0.26);
+    overflow: hidden;
+    padding: 0px;
+    display: inline-block; }
+    ul.fsg-posts li img {
+      width: 100%;
+      height: auto;
+      margin: 0 0 10px;
+      display: block;
+      clear: both; }
+    ul.fsg-posts li .fsg-post-text {
+      margin: 0 0 5px;
+      padding: 5px; }
+    ul.fsg-posts li .fsg-post-date {
+      text-align: right;
+      color: gray; }

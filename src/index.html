@@ -7,6 +7,8 @@
 </head>
 
 <body>
+	<div id="posts">
+	</div>
 	<div id="albums">
 	</div>
     <script src="../dist/scripts/wookmark.min.js"></script>
@@ -16,9 +18,15 @@
 	facebookGallery({
 		appId: '1270801512983487',
 		accessToken: '1270801512983487|21c21db8b582aa474f30bea9b73edc0b',
-		fbPage: 'lifewithdogs',
-		elementId: 'albums',
-		imagesCountLimit: 30
+		fbPage: 'kendosopot',
+		galleryOptions: {
+			elementId: 'albums',
+			imagesCountLimit: 30
+		},
+		postsOptions: {
+			elementId: 'posts',
+			postsCountLimit: 10
+		}
 	});
 	</script>
 	<script>
