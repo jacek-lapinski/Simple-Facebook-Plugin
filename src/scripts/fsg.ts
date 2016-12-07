@@ -138,10 +138,10 @@ class FSG {
         postElement.appendChild(dateElement);
         postElement.appendChild(textElement);
 
-        if(post.attachments 
-        && post.attachments.data 
-        && post.attachments.data.length > 0 
-        && post.attachments.data[0].type == 'share'){
+        if (post.attachments
+            && post.attachments.data
+            && post.attachments.data.length > 0
+            && (post.attachments.data[0].type == 'share' || post.attachments.data[0].type == 'video_share_youtube')) {
             let linkElement = document.createElement('a');
             linkElement.href = post.attachments.data[0].url;
             linkElement.className = 'fsg-post-link';
@@ -270,9 +270,17 @@ class PostsLoader {
 
     loadPosts(): Promise<Post[]> {
         return new Promise<Post[]>((resolve, reject) => {
-            FB.api(`/${this.config.fbPage}?fields=posts.limit(10){full_picture,created_time,message,id,attachments{type,url,title}}`, { access_token: this.config.accessToken }, (response) => {
+            FB.api(`/${this.config.fbPage}?fields=posts.limit(${this.config.postsOptions.postsCountLimit}){full_picture,created_time,message,id,attachments{type,url,title}}`, { access_token: this.config.accessToken }, (response) => {
                 let posts: Post[] = response.posts.data;
-                resolve(posts);
+                let result: Post[] = [];
+
+                for (let i = 0; i < posts.length; i++) {
+                    if (posts[i].message) {
+                        result.push(posts[i]);
+                    }
+                }
+
+                resolve(result);
             });
         });
     }

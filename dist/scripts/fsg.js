@@ -116,7 +116,7 @@ var FSG = (function () {
         if (post.attachments
             && post.attachments.data
             && post.attachments.data.length > 0
-            && post.attachments.data[0].type == 'share') {
+            && (post.attachments.data[0].type == 'share' || post.attachments.data[0].type == 'video_share_youtube')) {
             var linkElement = document.createElement('a');
             linkElement.href = post.attachments.data[0].url;
             linkElement.className = 'fsg-post-link';
@@ -227,9 +227,15 @@ var PostsLoader = (function () {
     PostsLoader.prototype.loadPosts = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            FB.api("/" + _this.config.fbPage + "?fields=posts.limit(10){full_picture,created_time,message,id,attachments{type,url,title}}", { access_token: _this.config.accessToken }, function (response) {
+            FB.api("/" + _this.config.fbPage + "?fields=posts.limit(" + _this.config.postsOptions.postsCountLimit + "){full_picture,created_time,message,id,attachments{type,url,title}}", { access_token: _this.config.accessToken }, function (response) {
                 var posts = response.posts.data;
-                resolve(posts);
+                var result = [];
+                for (var i = 0; i < posts.length; i++) {
+                    if (posts[i].message) {
+                        result.push(posts[i]);
+                    }
+                }
+                resolve(result);
             });
         });
     };

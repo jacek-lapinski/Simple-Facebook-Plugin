@@ -22,10 +22,10 @@ ul.fsg-albums {
       position: absolute;
       right: 0;
       top: 0;
-      height: 40px;
+      height: 50px;
       background-color: rgba(0, 0, 0, 0.5);
       color: white;
-      width: 40px;
+      width: 50px;
       text-align: center; }
     ul.fsg-albums li .fsg-album-count-box {
       overflow: auto;
@@ -65,3 +65,5 @@ ul.fsg-posts {
     ul.fsg-posts li .fsg-post-date {
       text-align: right;
       color: gray; }
+    ul.fsg-posts li .fsg-post-link {
+      padding: 5px; }
