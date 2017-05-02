@@ -1,5 +1,4 @@
-/// <reference path="fbsdk.d.ts" />
-/// <reference path="es6-promise.d.ts" />
+
 
 declare class Wookmark {
     constructor(container: string, options: any);
@@ -134,8 +133,8 @@ class FSG {
         textElement.innerText = post.message;
 
         let postElement = document.createElement('div');
-        postElement.appendChild(imgElement);
         postElement.appendChild(dateElement);
+        postElement.appendChild(imgElement);
         postElement.appendChild(textElement);
 
         if (post.attachments
@@ -270,7 +269,7 @@ class PostsLoader {
 
     loadPosts(): Promise<Post[]> {
         return new Promise<Post[]>((resolve, reject) => {
-            FB.api(`/${this.config.fbPage}?fields=posts.limit(${this.config.postsOptions.postsCountLimit}){full_picture,created_time,message,id,attachments{type,url,title}}`, { access_token: this.config.accessToken }, (response) => {
+            FB.api(`/${this.config.fbPage}?fields=posts.limit(${this.config.postsOptions.postsCountLimit}){full_picture,created_time,message,id,attachments{type,url,title}}`, { access_token: this.config.accessToken }, (response: any) => {
                 let posts: Post[] = response.posts.data;
                 let result: Post[] = [];
 
@@ -292,7 +291,7 @@ class AlbumsLoader {
 
     loadAlbums(): Promise<Album[]> {
         return new Promise<Album[]>((resolve, reject) => {
-            FB.api(`/${this.config.fbPage}/albums?limit=100&fields=created_time,name,id,count,picture{url},link,photos{images}`, { access_token: this.config.accessToken }, (response) => {
+            FB.api(`/${this.config.fbPage}/albums?limit=100&fields=created_time,name,id,count,picture{url},link,photos{images}`, { access_token: this.config.accessToken }, (response: any) => {
                 let albums: Album[] = response.data;
                 let result: Album[] = [];
 
@@ -333,7 +332,7 @@ class AlbumsLoader {
 
     loadAlbumImages(album: Album): Promise<Image[]> {
         return new Promise<Image[]>((resolve, reject) => {
-            FB.api(`/${album.id}?fields=photos.limit(100){images}`, { access_token: this.config.accessToken }, (response) => {
+            FB.api(`/${album.id}?fields=photos.limit(100){images}`, { access_token: this.config.accessToken }, (response: any) => {
 
                 let result = album.count > 0
                     ? this.getImagesForAlbum(response.photos.data)

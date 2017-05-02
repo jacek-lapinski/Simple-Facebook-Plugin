@@ -110,8 +110,8 @@ var FSG = (function () {
         textElement.className = 'fsg-post-text';
         textElement.innerText = post.message;
         var postElement = document.createElement('div');
-        postElement.appendChild(imgElement);
         postElement.appendChild(dateElement);
+        postElement.appendChild(imgElement);
         postElement.appendChild(textElement);
         if (post.attachments
             && post.attachments.data

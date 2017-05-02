@@ -21,17 +21,17 @@ ul.fsg-albums {
         }
 
         .fsg-album-title {
-            margin: 0 0 5px;
+            margin: 5px;
         }
 
         .fsg-album-count-wrapper {
             position: absolute;
             right: 0;
             top: 0;
-            height: 50px;
+            height: 36px;
             background-color: rgba(0,0,0,0.5);
             color: white;
-            width: 50px;
+            width: 36px;
             text-align: center;
         }
 
@@ -48,7 +48,7 @@ ul.fsg-albums {
         }
 
         .fsg-album-count {
-            font-size: 30px;
+            font-size: 22px;
             font-weight: bold;
             margin-top: 4px;
         }
@@ -83,7 +83,8 @@ ul.fsg-posts {
 
         .fsg-post-date {
             text-align: right;
-            color: gray;
+            font-weight: bold;
+            margin: 5px;
         }
 
         .fsg-post-link {

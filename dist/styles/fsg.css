@@ -17,15 +17,15 @@ ul.fsg-albums {
       display: block;
       clear: both; }
     ul.fsg-albums li .fsg-album-title {
-      margin: 0 0 5px; }
+      margin: 5px; }
     ul.fsg-albums li .fsg-album-count-wrapper {
       position: absolute;
       right: 0;
       top: 0;
-      height: 50px;
+      height: 36px;
       background-color: rgba(0, 0, 0, 0.5);
       color: white;
-      width: 50px;
+      width: 36px;
       text-align: center; }
     ul.fsg-albums li .fsg-album-count-box {
       overflow: auto;
@@ -38,7 +38,7 @@ ul.fsg-albums {
       left: 0;
       bottom: 0; }
     ul.fsg-albums li .fsg-album-count {
-      font-size: 30px;
+      font-size: 22px;
       font-weight: bold;
       margin-top: 4px; }
 
@@ -64,6 +64,7 @@ ul.fsg-posts {
       padding: 5px; }
     ul.fsg-posts li .fsg-post-date {
       text-align: right;
-      color: gray; }
+      font-weight: bold;
+      margin: 5px; }
     ul.fsg-posts li .fsg-post-link {
       padding: 5px; }
