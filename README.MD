@@ -1,11 +1,11 @@
-# facebook-simple-gallery 
+# simple-facebook-plugin 
 
-It is a very simple plugin for displaying facebook gallery on your own website
+It is a very simple plugin for displaying facebook content on your own website
 
 
 ## Example
 
-[link](http://htmlpreview.github.io/?https://github.com/jacek-lapinski/Facebook-Simple-Gallery/blob/master/src/index.html)
+[link](http://htmlpreview.github.io/?https://github.com/jacek-lapinski/Simple-Facebook-Plugin/blob/master/src/index.html)
 
 
 ## Getting started
@@ -15,7 +15,7 @@ It is a very simple plugin for displaying facebook gallery on your own website
 2. Put links to css files in your html file
     ```html
     <head>
-        <link rel="stylesheet" href="../dist/styles/fsg.min.css" />
+        <link rel="stylesheet" href="../dist/styles/sfp.min.css" />
         <link rel="stylesheet" href="../dist/styles/lightbox.min.css" />
     </head>
     ```
@@ -23,7 +23,7 @@ It is a very simple plugin for displaying facebook gallery on your own website
 3. Put scripts in your html file
     ```html
     <script src="../dist/scripts/wookmark.min.js"></script>
-    <script src="../dist/scripts/fsg.min.js"></script>
+    <script src="../dist/scripts/sfp.min.js"></script>
     <script src="../dist/scripts/lightbox-plus-jquery.min.js"></script>
     ```
 

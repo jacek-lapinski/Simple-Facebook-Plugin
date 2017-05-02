@@ -1,4 +1,4 @@
-ul.fsg-albums {
+ul.sfp-albums {
     list-style-type: none;
     position: relative;
 
@@ -20,11 +20,11 @@ ul.fsg-albums {
             clear: both;
         }
 
-        .fsg-album-title {
+        .sfp-album-title {
             margin: 5px;
         }
 
-        .fsg-album-count-wrapper {
+        .sfp-album-count-wrapper {
             position: absolute;
             right: 0;
             top: 0;
@@ -35,7 +35,7 @@ ul.fsg-albums {
             text-align: center;
         }
 
-        .fsg-album-count-box {
+        .sfp-album-count-box {
             overflow: auto;
             margin: auto;
             position: absolute;
@@ -47,7 +47,7 @@ ul.fsg-albums {
             bottom: 0;
         }
 
-        .fsg-album-count {
+        .sfp-album-count {
             font-size: 22px;
             font-weight: bold;
             margin-top: 4px;
@@ -55,7 +55,7 @@ ul.fsg-albums {
     }
 }
 
-ul.fsg-posts {
+ul.sfp-posts {
     list-style-type: none;
     position: relative;
 
@@ -76,18 +76,18 @@ ul.fsg-posts {
             clear: both;
         }
 
-        .fsg-post-text {
+        .sfp-post-text {
             margin: 0 0 5px;
             padding: 5px;
         }
 
-        .fsg-post-date {
+        .sfp-post-date {
             text-align: right;
             font-weight: bold;
             margin: 5px;
         }
 
-        .fsg-post-link {
+        .sfp-post-link {
             padding: 5px;
         }
     }

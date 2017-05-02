@@ -1,7 +1,7 @@
 {
-  "name": "facebook-simple-gallery",
+  "name": "simple-facebook-plugin",
   "version": "1.0.0",
-  "description": "It is a very simple library for displaying images from facebook",
+  "description": "It is a very simple library for displaying content from facebook",
   "main": "src/index.html",
   "scripts": {
     "build": "grunt build",
@@ -9,20 +9,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jacek-lapinski/Facebook-Simple-Gallery.git"
+    "url": "git+https://github.com/jacek-lapinski/Simple-Facebook-Plugin.git"
   },
   "keywords": [
     "Facebook",
+    "Content",
     "Gallery",
     "Images",
-    "Albums"
+    "Albums",
+    "Posts"
   ],
   "author": "Jacek Łapiński",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jacek-lapinski/Facebook-Simple-Gallery/issues"
+    "url": "https://github.com/jacek-lapinski/Simple-Facebook-Plugin/issues"
   },
-  "homepage": "https://github.com/jacek-lapinski/Facebook-Simple-Gallery#readme",
+  "homepage": "https://github.com/jacek-lapinski/Simple-Facebook-Plugin#readme",
   "dependencies": {
     "@types/es6-promise": "0.0.32",
     "@types/facebook-js-sdk": "^2.8.1",

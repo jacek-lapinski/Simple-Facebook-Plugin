@@ -1,14 +1,14 @@
-var FSG = (function () {
-    function FSG(config) {
+var SFP = (function () {
+    function SFP(config) {
         this.config = config;
         this.setDefaults();
         this.init();
     }
-    FSG.prototype.setDefaults = function () {
+    SFP.prototype.setDefaults = function () {
         this.setGalleryDefaults();
         this.setPostsDefaults();
     };
-    FSG.prototype.setPostsDefaults = function () {
+    SFP.prototype.setPostsDefaults = function () {
         if (this.config.postsOptions) {
             if (this.config.postsOptions.wookmarkOptions == undefined) {
                 var wookmarkOptions = {
@@ -25,7 +25,7 @@ var FSG = (function () {
             }
         }
     };
-    FSG.prototype.setGalleryDefaults = function () {
+    SFP.prototype.setGalleryDefaults = function () {
         if (this.config.galleryOptions) {
             if (this.config.galleryOptions.wookmarkOptions == undefined) {
                 var wookmarkOptions = {
@@ -48,16 +48,16 @@ var FSG = (function () {
             }
         }
     };
-    FSG.prototype.convertStringArrayToLowerCase = function (array) {
+    SFP.prototype.convertStringArrayToLowerCase = function (array) {
         for (var i = 0; i < array.length; i++) {
             array[i] = array[i].toLocaleLowerCase();
         }
     };
-    FSG.prototype.init = function () {
+    SFP.prototype.init = function () {
         this.initFbScript(document, 'facebook-jssdk');
         this.initFb(window);
     };
-    FSG.prototype.initFb = function (window) {
+    SFP.prototype.initFb = function (window) {
         var _this = this;
         window.fbAsyncInit = function () {
             FB.init({
@@ -73,7 +73,7 @@ var FSG = (function () {
             }
         };
     };
-    FSG.prototype.initFbScript = function (document, id) {
+    SFP.prototype.initFbScript = function (document, id) {
         if (document.getElementById(id)) {
             return;
         }
@@ -83,13 +83,13 @@ var FSG = (function () {
         js.src = "http://connect.facebook.net/en_US/sdk.js";
         fjs.parentNode.insertBefore(js, fjs);
     };
-    FSG.prototype.loadPosts = function (elementId) {
+    SFP.prototype.loadPosts = function (elementId) {
         var _this = this;
         var postsLoader = new PostsLoader(this.config);
         var posts = postsLoader.loadPosts();
         var postsElement = document.getElementById(elementId);
         var ulElement = document.createElement('ul');
-        ulElement.className = 'fsg-posts';
+        ulElement.className = 'sfp-posts';
         postsElement.appendChild(ulElement);
         posts.then(function (list) {
             list.forEach(function (post) {
@@ -98,16 +98,16 @@ var FSG = (function () {
             });
         });
     };
-    FSG.prototype.createPostElement = function (post) {
+    SFP.prototype.createPostElement = function (post) {
         var _this = this;
         var imgElement = document.createElement('img');
         imgElement.src = this.getPostImageUrl(post);
-        imgElement.onload = function () { return _this.initWookmark('.fsg-posts', _this.config.postsOptions.wookmarkOptions); };
+        imgElement.onload = function () { return _this.initWookmark('.sfp-posts', _this.config.postsOptions.wookmarkOptions); };
         var dateElement = document.createElement('div');
         dateElement.innerText = new Date(post.created_time).toLocaleDateString();
-        dateElement.className = 'fsg-post-date';
+        dateElement.className = 'sfp-post-date';
         var textElement = document.createElement('div');
-        textElement.className = 'fsg-post-text';
+        textElement.className = 'sfp-post-text';
         textElement.innerText = post.message;
         var postElement = document.createElement('div');
         postElement.appendChild(dateElement);
@@ -119,28 +119,28 @@ var FSG = (function () {
             && (post.attachments.data[0].type == 'share' || post.attachments.data[0].type == 'video_share_youtube')) {
             var linkElement = document.createElement('a');
             linkElement.href = post.attachments.data[0].url;
-            linkElement.className = 'fsg-post-link';
+            linkElement.className = 'sfp-post-link';
             linkElement.innerText = post.attachments.data[0].title;
             postElement.appendChild(linkElement);
         }
         var liElement = document.createElement('li');
-        liElement.className = 'fsg-post';
+        liElement.className = 'sfp-post';
         liElement.appendChild(postElement);
         return liElement;
     };
-    FSG.prototype.getPostImageUrl = function (post) {
+    SFP.prototype.getPostImageUrl = function (post) {
         if (post.full_picture != null) {
             return post.full_picture;
         }
         return this.config.postsOptions.defaultPostImageUrl;
     };
-    FSG.prototype.loadAlbums = function (elementId) {
+    SFP.prototype.loadAlbums = function (elementId) {
         var _this = this;
         var albumsLoader = new AlbumsLoader(this.config);
         var albums = albumsLoader.loadAlbums();
         var albumsElement = document.getElementById(elementId);
         var ulElement = document.createElement('ul');
-        ulElement.className = 'fsg-albums';
+        ulElement.className = 'sfp-albums';
         albumsElement.appendChild(ulElement);
         albums.then(function (list) {
             list.forEach(function (album) {
@@ -149,27 +149,27 @@ var FSG = (function () {
             });
         });
     };
-    FSG.prototype.initWookmark = function (element, wookmarkOptions) {
+    SFP.prototype.initWookmark = function (element, wookmarkOptions) {
         var wookmark = new Wookmark(element, wookmarkOptions);
     };
-    FSG.prototype.createAlbumElement = function (album) {
+    SFP.prototype.createAlbumElement = function (album) {
         var _this = this;
         var imgElement = document.createElement('img');
         imgElement.src = album.picture;
-        imgElement.onload = function () { return _this.initWookmark('.fsg-albums', _this.config.galleryOptions.wookmarkOptions); };
+        imgElement.onload = function () { return _this.initWookmark('.sfp-albums', _this.config.galleryOptions.wookmarkOptions); };
         var countWrapperElement = document.createElement('div');
-        countWrapperElement.className = 'fsg-album-count-wrapper';
+        countWrapperElement.className = 'sfp-album-count-wrapper';
         var countBoxElement = document.createElement('div');
-        countBoxElement.className = 'fsg-album-count-box';
+        countBoxElement.className = 'sfp-album-count-box';
         var countElement = document.createElement('div');
-        countElement.className = 'fsg-album-count';
+        countElement.className = 'sfp-album-count';
         countElement.innerText = album.count > this.config.galleryOptions.imagesCountLimit
             ? this.config.galleryOptions.imagesCountLimit.toString()
             : album.count.toString();
         countBoxElement.appendChild(countElement);
         countWrapperElement.appendChild(countBoxElement);
         var titleElement = document.createElement('div');
-        titleElement.className = 'fsg-album-title';
+        titleElement.className = 'sfp-album-title';
         titleElement.innerText = album.name;
         var albumElement = document.createElement('div');
         albumElement.appendChild(imgElement);
@@ -178,7 +178,7 @@ var FSG = (function () {
         var imagesElement = document.createElement('div');
         imagesElement.id = this.getImagesId(album);
         var liElement = document.createElement('li');
-        liElement.className = 'fsg-album';
+        liElement.className = 'sfp-album';
         liElement.appendChild(albumElement);
         liElement.appendChild(imagesElement);
         albumElement.onclick = function (ev) {
@@ -192,18 +192,18 @@ var FSG = (function () {
         };
         return liElement;
     };
-    FSG.prototype.getAlbumImagesElement = function (album) {
+    SFP.prototype.getAlbumImagesElement = function (album) {
         var collectionId = this.getImagesId(album);
         var collection = document.getElementById(collectionId);
         return collection;
     };
-    FSG.prototype.getImagesId = function (album) {
+    SFP.prototype.getImagesId = function (album) {
         return "images-" + album.id;
     };
-    FSG.prototype.getImageId = function (image) {
+    SFP.prototype.getImageId = function (image) {
         return "image-" + image.id;
     };
-    FSG.prototype.loadAlbumImages = function (album) {
+    SFP.prototype.loadAlbumImages = function (album) {
         var _this = this;
         var collection = this.getAlbumImagesElement(album);
         album.images.then(function (list) {
@@ -216,14 +216,14 @@ var FSG = (function () {
             _this.showAlbum(album);
         });
     };
-    FSG.prototype.showAlbum = function (album) {
+    SFP.prototype.showAlbum = function (album) {
         var collection = this.getAlbumImagesElement(album);
         if (collection.children.length > 0) {
             var firstChild = collection.children[0];
             firstChild.click();
         }
     };
-    return FSG;
+    return SFP;
 }());
 ;
 var PostsLoader = (function () {
@@ -317,5 +317,5 @@ var AlbumsLoader = (function () {
 }());
 ;
 function facebookGallery(config) {
-    var fsg = new FSG(config);
+    var sfp = new SFP(config);
 }

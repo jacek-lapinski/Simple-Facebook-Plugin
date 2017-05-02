@@ -1,7 +1,7 @@
-ul.fsg-albums {
+ul.sfp-albums {
   list-style-type: none;
   position: relative; }
-  ul.fsg-albums li {
+  ul.sfp-albums li {
     display: list-item;
     position: relative;
     box-sizing: border-box;
@@ -10,15 +10,15 @@ ul.fsg-albums {
     padding: 0px;
     cursor: pointer;
     display: inline-block; }
-    ul.fsg-albums li img {
+    ul.sfp-albums li img {
       width: 100%;
       height: auto;
       margin: 0 0 10px;
       display: block;
       clear: both; }
-    ul.fsg-albums li .fsg-album-title {
+    ul.sfp-albums li .sfp-album-title {
       margin: 5px; }
-    ul.fsg-albums li .fsg-album-count-wrapper {
+    ul.sfp-albums li .sfp-album-count-wrapper {
       position: absolute;
       right: 0;
       top: 0;
@@ -27,7 +27,7 @@ ul.fsg-albums {
       color: white;
       width: 36px;
       text-align: center; }
-    ul.fsg-albums li .fsg-album-count-box {
+    ul.sfp-albums li .sfp-album-count-box {
       overflow: auto;
       margin: auto;
       position: absolute;
@@ -37,15 +37,15 @@ ul.fsg-albums {
       right: 0;
       left: 0;
       bottom: 0; }
-    ul.fsg-albums li .fsg-album-count {
+    ul.sfp-albums li .sfp-album-count {
       font-size: 22px;
       font-weight: bold;
       margin-top: 4px; }
 
-ul.fsg-posts {
+ul.sfp-posts {
   list-style-type: none;
   position: relative; }
-  ul.fsg-posts li {
+  ul.sfp-posts li {
     display: list-item;
     position: relative;
     box-sizing: border-box;
@@ -53,18 +53,18 @@ ul.fsg-posts {
     overflow: hidden;
     padding: 0px;
     display: inline-block; }
-    ul.fsg-posts li img {
+    ul.sfp-posts li img {
       width: 100%;
       height: auto;
       margin: 0 0 10px;
       display: block;
       clear: both; }
-    ul.fsg-posts li .fsg-post-text {
+    ul.sfp-posts li .sfp-post-text {
       margin: 0 0 5px;
       padding: 5px; }
-    ul.fsg-posts li .fsg-post-date {
+    ul.sfp-posts li .sfp-post-date {
       text-align: right;
       font-weight: bold;
       margin: 5px; }
-    ul.fsg-posts li .fsg-post-link {
+    ul.sfp-posts li .sfp-post-link {
       padding: 5px; }

@@ -4,7 +4,7 @@ declare class Wookmark {
     constructor(container: string, options: any);
 }
 
-class FSG {
+class SFP {
     constructor(private config: Config) {
         this.setDefaults();
         this.init();
@@ -108,7 +108,7 @@ class FSG {
 
         let postsElement = document.getElementById(elementId);
         let ulElement = document.createElement('ul');
-        ulElement.className = 'fsg-posts';
+        ulElement.className = 'sfp-posts';
         postsElement.appendChild(ulElement);
 
         posts.then(list => {
@@ -122,14 +122,14 @@ class FSG {
     private createPostElement(post: Post): HTMLElement {
         let imgElement = document.createElement('img');
         imgElement.src = this.getPostImageUrl(post);
-        imgElement.onload = () => this.initWookmark('.fsg-posts', this.config.postsOptions.wookmarkOptions);
+        imgElement.onload = () => this.initWookmark('.sfp-posts', this.config.postsOptions.wookmarkOptions);
 
         let dateElement = document.createElement('div');
         dateElement.innerText = new Date(post.created_time).toLocaleDateString();
-        dateElement.className = 'fsg-post-date';
+        dateElement.className = 'sfp-post-date';
 
         let textElement = document.createElement('div');
-        textElement.className = 'fsg-post-text';
+        textElement.className = 'sfp-post-text';
         textElement.innerText = post.message;
 
         let postElement = document.createElement('div');
@@ -143,14 +143,14 @@ class FSG {
             && (post.attachments.data[0].type == 'share' || post.attachments.data[0].type == 'video_share_youtube')) {
             let linkElement = document.createElement('a');
             linkElement.href = post.attachments.data[0].url;
-            linkElement.className = 'fsg-post-link';
+            linkElement.className = 'sfp-post-link';
             linkElement.innerText = post.attachments.data[0].title;
             postElement.appendChild(linkElement);
         }
 
 
         let liElement = document.createElement('li');
-        liElement.className = 'fsg-post';
+        liElement.className = 'sfp-post';
         liElement.appendChild(postElement);
 
         return liElement;
@@ -170,7 +170,7 @@ class FSG {
 
         let albumsElement = document.getElementById(elementId);
         let ulElement = document.createElement('ul');
-        ulElement.className = 'fsg-albums';
+        ulElement.className = 'sfp-albums';
         albumsElement.appendChild(ulElement);
 
         albums.then(list => {
@@ -188,16 +188,16 @@ class FSG {
     private createAlbumElement(album: Album): HTMLElement {
         let imgElement = document.createElement('img');
         imgElement.src = album.picture;
-        imgElement.onload = () => this.initWookmark('.fsg-albums', this.config.galleryOptions.wookmarkOptions);
+        imgElement.onload = () => this.initWookmark('.sfp-albums', this.config.galleryOptions.wookmarkOptions);
 
         let countWrapperElement = document.createElement('div');
-        countWrapperElement.className = 'fsg-album-count-wrapper';
+        countWrapperElement.className = 'sfp-album-count-wrapper';
 
         let countBoxElement = document.createElement('div');
-        countBoxElement.className = 'fsg-album-count-box';
+        countBoxElement.className = 'sfp-album-count-box';
 
         let countElement = document.createElement('div');
-        countElement.className = 'fsg-album-count';
+        countElement.className = 'sfp-album-count';
         countElement.innerText = album.count > this.config.galleryOptions.imagesCountLimit
             ? this.config.galleryOptions.imagesCountLimit.toString()
             : album.count.toString();
@@ -206,7 +206,7 @@ class FSG {
         countWrapperElement.appendChild(countBoxElement);
 
         let titleElement = document.createElement('div');
-        titleElement.className = 'fsg-album-title';
+        titleElement.className = 'sfp-album-title';
         titleElement.innerText = album.name;
 
         let albumElement = document.createElement('div');
@@ -218,7 +218,7 @@ class FSG {
         imagesElement.id = this.getImagesId(album);
 
         let liElement = document.createElement('li');
-        liElement.className = 'fsg-album';
+        liElement.className = 'sfp-album';
         liElement.appendChild(albumElement);
         liElement.appendChild(imagesElement);
 
@@ -415,5 +415,5 @@ interface PostsOptions {
 }
 
 function facebookGallery(config: Config): void {
-    let fsg = new FSG(config);
+    let sfp = new SFP(config);
 }
