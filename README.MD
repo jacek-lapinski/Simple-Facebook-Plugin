@@ -34,7 +34,12 @@ It is a very simple plugin for displaying facebook content on your own website
         appId: '<YOUR FACEBOOK APP ID>',
         accessToken: '<YOUR FACEBOOK APP ID>|<YOUR FACEBOOK APP SECURE>',
         fbPage: '<YOUR FACEBOOK PAGE NAME>',
-        elementId: '<HTML ELEMENT ID FOR GALLERY>'
+        galleryOptions: {
+            elementId: '<HTML ELEMENT ID FOR GALLERY>',
+        },
+        postsOptions: {
+            elementId: '<HTML ELEMENT ID FOR POSTS>',
+        },
     });
     </script>
     ```
@@ -46,7 +51,12 @@ It is a very simple plugin for displaying facebook content on your own website
     appId: '<YOUR FACEBOOK APP ID>',
     accessToken: '<YOUR FACEBOOK APP ID>|<YOUR FACEBOOK APP SECURE>',
     fbPage: '<YOUR FACEBOOK PAGE NAME>',
-    elementId: '<HTML ELEMENT ID FOR GALLERY>',
+    galleryOptions: {
+        elementId: '<HTML ELEMENT ID FOR GALLERY>',
+    },
+    postsOptions: {
+        elementId: '<HTML ELEMENT ID FOR POSTS>',
+    },
     wookmarkOptions: {
         align: 'center',
         autoResize: false,
@@ -90,6 +100,12 @@ accessToken: string
 
 fbPage: string
 
+galleryOptions: { }
+
+postsOptions: { }
+
+### Gallery options
+
 elementId: string
 
 imagesCountLimit: number
@@ -98,7 +114,17 @@ includeAlbums: string[ ]
 
 excludeAlbums: string[ ]
 
-wookmarkOptions?: { }
+wookmarkOptions: { }
+
+### Posts options
+
+elementId: string
+
+postsCountLimit: number
+
+defaultPostImageUrl: string
+
+wookmarkOptions: { }
 
 
 ## Dependencies
@@ -120,7 +146,7 @@ wookmarkOptions?: { }
 
 ## License
 
-ISC
+MIT
 
 
 ## Contribution
