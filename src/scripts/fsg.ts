@@ -121,7 +121,7 @@ class FSG {
 
     private createPostElement(post: Post): HTMLElement {
         let imgElement = document.createElement('img');
-        imgElement.src = post.full_picture;
+        imgElement.src = this.getPostImageUrl(post);
         imgElement.onload = () => this.initWookmark('.fsg-posts', this.config.postsOptions.wookmarkOptions);
 
         let dateElement = document.createElement('div');
@@ -154,6 +154,14 @@ class FSG {
         liElement.appendChild(postElement);
 
         return liElement;
+    }
+
+    private getPostImageUrl(post: Post): string {
+        if(post.full_picture != null){
+            return post.full_picture;
+        }
+
+        return this.config.postsOptions.defaultPostImageUrl;
     }
 
     private loadAlbums(elementId: string): void {
@@ -403,6 +411,7 @@ interface PostsOptions {
     elementId: string;
     postsCountLimit?: number;
     wookmarkOptions?: any;
+    defaultPostImageUrl?: string;
 }
 
 function facebookGallery(config: Config): void {

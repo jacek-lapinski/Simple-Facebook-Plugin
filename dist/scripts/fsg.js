@@ -101,7 +101,7 @@ var FSG = (function () {
     FSG.prototype.createPostElement = function (post) {
         var _this = this;
         var imgElement = document.createElement('img');
-        imgElement.src = post.full_picture;
+        imgElement.src = this.getPostImageUrl(post);
         imgElement.onload = function () { return _this.initWookmark('.fsg-posts', _this.config.postsOptions.wookmarkOptions); };
         var dateElement = document.createElement('div');
         dateElement.innerText = new Date(post.created_time).toLocaleDateString();
@@ -127,6 +127,12 @@ var FSG = (function () {
         liElement.className = 'fsg-post';
         liElement.appendChild(postElement);
         return liElement;
+    };
+    FSG.prototype.getPostImageUrl = function (post) {
+        if (post.full_picture != null) {
+            return post.full_picture;
+        }
+        return this.config.postsOptions.defaultPostImageUrl;
     };
     FSG.prototype.loadAlbums = function (elementId) {
         var _this = this;
